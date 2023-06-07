@@ -29,10 +29,10 @@ fs
   .forEach(file => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
     db[model.name] = model;
-    model.sync()
-        .then(r => console.info(`Sync ${model.name}`))
-        .catch(e => console.error(`Sync failed - model ${model.name}`, e))
-    ;
+    // model.sync()
+    //     .then(r => console.info(`Sync ${model.name}`))
+    //     .catch(e => console.error(`Sync failed - model ${model.name}`, e))
+    // ;
   });
 
 Object.keys(db).forEach(modelName => {
@@ -40,6 +40,8 @@ Object.keys(db).forEach(modelName => {
     db[modelName].associate(db);
   }
 });
+
+sequelize.sync();
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

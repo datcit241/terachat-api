@@ -1,10 +1,12 @@
 const Model = require("../../models");
 
 async function list(userId) {
-  const user =  Model["User"].findByPk(userId);
+  const user = await Model.User.findByPk(userId);
 
   if (!user) {
-    throw new Error("User not found");
+    const err = new Error("User not found");
+    err.status = 404;
+    throw err;
   }
 
   return await user.getConversations();

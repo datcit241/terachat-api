@@ -10,9 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsToMany(sequelize['User'], {through: sequelize['ConversationMember']});
-      this.hasMany(sequelize['Message']);
-      this.belongsTo(sequelize['ConversationType']);
+      this.belongsToMany(models['User'], {through: models['ConversationMember']});
+      this.hasMany(models['Message']);
     }
   }
   Conversation.init({
@@ -27,9 +26,9 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
     },
-    isPrivate: {
+    isPublic: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true
+      defaultValue: false
     }
   }, {
     sequelize,

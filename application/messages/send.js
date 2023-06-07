@@ -1,19 +1,26 @@
 const Model = require('../../models');
-async function send({userId, conversationId, text}) {
-  const conversation = await Model['Conversation'].findOne({
-    where: {
-      id: conversationId
-    }
-  });
 
-  if (!conversation) {
-    throw new Error('Conversation not found');
+async function send({userId, conversationId, text}) {
+  if (!text) {
+    const err = new Error('Text is required');
+    err.status = 400;
+    throw err;
   }
 
-  const sender = await Model['User'].findByPk(userId);
+  const conversation = await Model.Conversation.findByPk(conversationId);
+
+  if (!conversation) {
+    const err = new Error('Conversation not found');
+    err.status = 404;
+    throw err;
+  }
+
+  const sender = await Model.User.findByPk(userId);
 
   if (!sender) {
-    throw new Error('User not found');
+    const err = new Error('User not found');
+    err.status = 404;
+    throw err;
   }
 
   const message = await Model['Message'].create({
@@ -22,7 +29,6 @@ async function send({userId, conversationId, text}) {
 
   await message.setUser(sender);
   await message.setConversation(conversation);
-  message.save();
 
   return message;
 }
