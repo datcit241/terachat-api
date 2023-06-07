@@ -5,14 +5,20 @@ const services = require("../application");
 app.get("/list", async (req, res) => {
   const {userId} = req.user;
 
-  let conversation;
+  let conversations;
   try {
-    conversation = await services.conversations.list(userId);
+    conversations = await services.conversations.list(userId);
   } catch (err) {
-    return res.status(err.status).send({ error: err.message });
+    console.log(err)
+    return res.status(err.status || 500).send({ error: err.message });
   }
 
-  return res.status(200).json(conversation);
+  return res.status(200).send({conversations});
+});
+
+app.get("/list-all", async (req, res) => {
+  const conversations = await services.conversations.listAll();
+  return res.status(200).send({conversations})
 });
 
 app.post("/create", async (req, res) => {
@@ -29,7 +35,7 @@ app.put("/join", async (req, res) => {
   try {
     await services.conversations.join({userId, conversationId, password});
   } catch (err) {
-    return res.status(err.status).send({ error: err.message });
+    return res.status(err.status || 500).send({ error: err.message });
   }
   return res.status(200).send();
 });
@@ -40,7 +46,7 @@ app.delete("/leave",async (req, res) => {
   try {
     await services.conversations.leave({userId, conversationId});
   } catch (err) {
-    return res.status(err.status).send({ error: err.message });
+    return res.status(err.status || 500).send({ error: err.message });
   }
   return res.status(200).send();
 });
@@ -51,7 +57,7 @@ app.post("/dispose", async (req, res) => {
   try {
     await services.conversations.dispose({userId, conversationId});
   } catch (err) {
-    return res.status(err.status).send({ error: err.message });
+    return res.status(err.status || 500).send({ error: err.message });
   }
   return res.status(200).send();
 });
@@ -62,7 +68,7 @@ app.post("/renew-password", async (req, res) => {
   try {
     await services.conversations.renewPassword({userId, conversationId});
   } catch (err) {
-    return res.status(err.status).send({ error: err.message });
+    return res.status(err.status || 500).send({ error: err.message });
   }
   return res.status(200).send();
 });

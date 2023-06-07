@@ -9,7 +9,7 @@ app.get("/list", async (req, res) => {
   try {
     messages = await services.messages.list({userId, conversationId});
   } catch (err) {
-    return res.status(err).send({error: err.message});
+    return res.status(err.status || 500).send({error: err.message});
   }
   return res.status(200).send({messages})
 });
@@ -20,7 +20,7 @@ app.post("/send", async (req, res) => {
   try {
     await services.messages.send({conversationId, userId, text});
   } catch (err) {
-    return res.status(err).send({error: err.message});
+    return res.status(err.status || 500).send({error: err.message});
   }
   return res.status(200).send();
 });
