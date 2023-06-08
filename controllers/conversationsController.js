@@ -35,8 +35,8 @@ app.get("/list-members", async (req, res) => {
 
 app.post("/create", async (req, res) => {
   const {userId} = req.user;
-  const {users, isPublic} = req.body;
-  const conversation = await services.conversations.create({ userId, users, isPublic });
+  const {users, isPublic, displayName} = req.body;
+  const conversation = await services.conversations.create({ userId, users, isPublic, displayName });
   res.send(conversation);
 });
 
