@@ -21,6 +21,18 @@ app.get("/list-all", async (req, res) => {
   return res.status(200).send({conversations})
 });
 
+app.get("/list-members", async (req, res) => {
+  const {userId} = req.user;
+  const {conversationId} = req.query;
+  let members;
+  try {
+    members = await services.conversations.listMembers({userId, conversationId});
+  } catch (err) {
+    return res.status(err.statusCode || 500).send({error: err.message});
+  }
+  return res.status(200).send({members})
+});
+
 app.post("/create", async (req, res) => {
   const {userId} = req.user;
   const {users, isPublic} = req.body;

@@ -1,11 +1,15 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const authController = require("./controllers/authController");
 const conversationsController = require("./controllers/conversationsController");
 const messagesController = require("./controllers/messagesController");
 const auth = require("./middleware/auth");
 
 const app = express();
+app.use(cors({
+  origin: '*'
+}));
 
 app.use(express.json());
 

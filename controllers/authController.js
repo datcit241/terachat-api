@@ -50,6 +50,7 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   const {email, password} = req.body;
+  console.log(req.body);
 
   if (!(email && password)) {
     return res.status(400).send({msg: "All input is required"});
@@ -79,7 +80,7 @@ app.post("/welcome", auth, async (req, res) => {
 
 app.get("/get-current-user", auth, async (req, res) => {
   const user = await User.findOne({where: {email: req.user.email}});
-  res.send({user});
-})
+  res.send({user: getUserDTO(user)});
+});
 
 module.exports = app;

@@ -21,7 +21,16 @@ async function list({userId, conversationId}) {
     throw err;
   }
 
-  return await conversation.getMessages();
+  console.log(conversation);
+  return await Model.Message.findAll({
+    where: {
+      ConversationId: conversationId
+    },
+    order: [["createdAt", "ASC"]]
+  })
+
+  // return conversation.Messages;
+  // return await conversation.getMessages();
 }
 
 module.exports = list;

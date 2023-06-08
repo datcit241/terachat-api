@@ -4,7 +4,7 @@ const services = require("../application");
 
 app.get("/list", async (req, res) => {
   const {userId} = req.user;
-  const {conversationId} = req.body;
+  const {conversationId} = req.query;
   let messages;
   try {
     messages = await services.messages.list({userId, conversationId});
@@ -17,12 +17,13 @@ app.get("/list", async (req, res) => {
 app.post("/send", async (req, res) => {
   const {userId} = req.user;
   const {conversationId, text} = req.body;
+  let message;
   try {
-    await services.messages.send({conversationId, userId, text});
+    message = await services.messages.send({conversationId, userId, text});
   } catch (err) {
     return res.status(err.status || 500).send({error: err.message});
   }
-  return res.status(200).send();
+  return res.status(200).send(message);
 });
 
 module.exports = app;
