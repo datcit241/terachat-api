@@ -16,7 +16,7 @@ Terachat is a real-time chat web based applciation consists of 2 projects:
 create table terachat;
 ```
 
-### Config the project to use the database creatd
+### Config the project to use the database created
 File **`/config/config.json`**
 ```js
 {
