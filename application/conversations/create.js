@@ -1,6 +1,7 @@
 const Model = require("../../models");
 
 async function create({userId, users, isPublic, displayName}) {
+  users = users.filter(user => user.id !== userId);
   const conversation = await Model.Conversation.create({displayName, isPublic: !!isPublic});
   await conversation.setUsers(await Promise.all(users.map(async user => await Model.User.findByPk(user.id))));
   console.log(conversation.id);
